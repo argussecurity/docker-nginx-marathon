@@ -116,10 +116,6 @@ function out { printf '%s\n' "$*" ;}
 # argument is required as described in the `USAGE` message.
 [ $# -lt 1 ] && { -h; exit 1; }
 
-echo AAAAAAAAAA
-echo "$@"
-echo BBBBBBBBBB
-
 if [[ ${1:-} ]] && declare -F | cut -d' ' -f3 | fgrep -qx -- "${1:-}"
 then "$@"
 else main "$@"
