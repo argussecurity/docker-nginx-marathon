@@ -16,7 +16,8 @@ cat <<USAGE
       The cronjob is installed as:
         $cronjob
       and run as root.
-  2. Runs nginx
+  2. Restarts cron service (it is not running for some reason)
+  3. Runs nginx
 
   Example: $name install_cronjob "play|node" localhost:8080
 USAGE
@@ -118,6 +119,6 @@ function out { printf '%s\n' "$*" ;}
 [ $# -lt 1 ] && { -h; exit 1; }
 
 if [[ ${1:-} ]] && declare -F | cut -d' ' -f3 | fgrep -qx -- "${1:-}"
-then "$@" && nginx -g "daemon off;"
+then "$@" && service cron restart && nginx -g "daemon off;"
 else main "$@"
 fi
