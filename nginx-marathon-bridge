@@ -4,20 +4,18 @@ function -h {
 cat <<USAGE
  USAGE: $name <apps_regex> <marathon host:port>+
         $name install_cronjob <apps_regex> <marathon host:port>+
-  1. Generates a new configuration file for nginx from the specified Marathon
-      servers, replaces the file in /etc/nginx/conf.d and restarts the service.
-      In the second form, installs the script itself, nginx and a cronjob that
-      once a minute pings one of the Marathon servers specified and refreshes
-      nginx if anything has changed. The list of Marathons to ping is stored,
-      one per line, in:
-        $cronjob_conf_file
-      The script is installed as:
-        $script_path
-      The cronjob is installed as:
-        $cronjob
-      and run as root.
-  2. Restarts cron service (it is not running for some reason)
-  3. Runs nginx
+ Generates a new configuration file for nginx from the specified Marathon
+  servers, replaces the file in /etc/nginx/conf.d and restarts the service.
+  In the second form, installs the script itself, nginx and a cronjob that
+  once a minute pings one of the Marathon servers specified and refreshes
+  nginx if anything has changed. The list of Marathons to ping is stored,
+  one per line, in:
+    $cronjob_conf_file
+  The script is installed as:
+    $script_path
+  The cronjob is installed as:
+    $cronjob
+  and run as root.
 
   Example: $name install_cronjob "play|node" localhost:8080
 USAGE
@@ -118,7 +116,11 @@ function out { printf '%s\n' "$*" ;}
 # argument is required as described in the `USAGE` message.
 [ $# -lt 1 ] && { -h; exit 1; }
 
+echo AAAAAAAAAA
+echo "$@"
+echo BBBBBBBBBB
+
 if [[ ${1:-} ]] && declare -F | cut -d' ' -f3 | fgrep -qx -- "${1:-}"
-then "$@" && service cron restart && nginx -g "daemon off;"
+then "$@"
 else main "$@"
 fi

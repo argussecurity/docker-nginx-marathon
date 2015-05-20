@@ -1,7 +1,10 @@
 FROM nginx:latest
 
-RUN apt-get -qqy update && apt-get -qqy install cron curl
+RUN apt-get -qqy update && apt-get -qqy install cron curl supervisor
 
-ADD nginx-marathon-bridge /usr/app/
+ADD supervisord.conf /etc/supervisor/conf.d/
+ADD nginx-marathon-bridge /usr/bin/
+ADD inject-and-run /usr/bin/
 
-ENTRYPOINT ["/usr/app/nginx-marathon-bridge", "install_cronjob"]
+ENTRYPOINT ["/bin/bash", "-e"]
+CMD inject-and-run override_this localhost:8080
