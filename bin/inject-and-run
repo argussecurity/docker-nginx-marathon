@@ -1,0 +1,8 @@
+#/bin/bash
+set -o errexit -o nounset
+
+ARGS="$@"
+
+sed -i s/args_placeholder/"$ARGS"/g /etc/supervisor/conf.d/supervisord.conf
+
+/usr/bin/supervisord
