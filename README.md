@@ -16,7 +16,7 @@ where <apps_regex> is a regular expression to filter Marathon's tasks on (use ""
 
 ## Example
 
-`docker run -d --net host argussecurity/nginx-marathon inject-and-run "play|node" localhost:8080`
+`docker run -d -p 80:80 argussecurity/nginx-marathon inject-and-run "play|node" localhost:8080`
 
 Will do the following:
 
@@ -36,3 +36,8 @@ Will do the following:
     ```
 
 3. Run nginx as in the official nginx docker (nginx -g "daemon off;")
+
+
+## Notes
+
+- For some reason, the cron job doesn't work when running with HOST networking (`--net=host`)
