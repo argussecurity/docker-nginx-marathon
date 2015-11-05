@@ -16,13 +16,13 @@ where <apps_regex> is a regular expression to filter Marathon's tasks on (use ""
 
 ## Example
 
-`docker run -d -p 80:80 argussecurity/nginx-marathon inject-and-run "play|node" localhost:8080`
+`docker run -d -p 80:80 argussecurity/nginx-marathon inject-and-run "^(play-server|node-server)$" localhost:8080`
 
 Will do the following:
 
 1. Create a cron job to run 'nginx-marathon-bridge' script every 1 minute.
     The script generates a file named 'sites.conf' in /etc/nginx/conf.c/
-    The file will contain all tasks queried from Marathon that match the given regex ("play|node")
+    The file will contain all tasks queried from Marathon that match the given regex ("^(play-server|node-server)$")
     as upstreams, for example:
     ```
     upstream play-server {
