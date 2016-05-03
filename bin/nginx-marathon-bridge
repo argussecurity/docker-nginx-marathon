@@ -88,6 +88,7 @@ function apps {
 
     if [ ! -z "${app_port##*[!0-9]*}" ]
     then
+      # TODO: ip_hash only for specific upstreams
       cat <<EOF
 upstream $app_name {
     ip_hash;
