@@ -90,6 +90,7 @@ function apps {
     then
       cat <<EOF
 upstream $app_name {
+    ip_hash;
 EOF
       while [[ $# -ne 0 ]]
       do
