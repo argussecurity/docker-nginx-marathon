@@ -18,7 +18,7 @@ def main():
         data = sys.stdin.read(int(headers['len'])) # read the event payload
         write_stderr(data) # print the event payload to stderr
         from subprocess import call
-        call(["killall", "-9", "supervisord"])
+        call(["pkill", "-9", "supervisord"])
 
 if __name__ == '__main__':
     main()
