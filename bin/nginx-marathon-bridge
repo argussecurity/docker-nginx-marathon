@@ -5,7 +5,7 @@ cat <<USAGE
  USAGE: $name <apps_regex> <marathon host:port>+
         $name install_cronjob <apps_regex> <marathon host:port>+
  Generates a new configuration file for nginx from the specified Marathon
-  servers, replaces the file in /etc/nginx/conf.d and restarts the service.
+  servers, replaces the file in /usr/local/openresty/nginx/conf/conf.d/ and restarts the service.
   In the second form, installs the script itself, nginx and a cronjob that
   once a minute pings one of the Marathon servers specified and refreshes
   nginx if anything has changed. The list of Marathons to ping is stored,
@@ -33,10 +33,10 @@ function main {
 
 function refresh_system_nginx {
   config "$@" > /tmp/"$conf_file"
-  if ! diff -q /tmp/"$conf_file" /etc/nginx/conf.d/"$conf_file" >&2
+  if ! diff -q /tmp/"$conf_file" /usr/local/openresty/nginx/conf/conf.d/"$conf_file" >&2
   then
     msg "Found changes. Sending reload request to nginx..."
-    cat /tmp/"$conf_file" > /etc/nginx/conf.d/"$conf_file"
+    cat /tmp/"$conf_file" > /usr/local/openresty/nginx/conf/conf.d/"$conf_file"
     /etc/init.d/nginx reload
   fi
 }
@@ -50,7 +50,7 @@ function install_cronjob {
   cat "$0" | dd of="$script_path"
   chmod ug+rx "$script_path"
   cronjob     | dd of="$cronjob"
-  config "$@" | dd of=/etc/nginx/conf.d/"$conf_file"
+  config "$@" | dd of=/usr/local/openresty/nginx/conf/conf.d/"$conf_file"
 }
 
 function cronjob {

@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM openresty/openresty:trusty
 
 RUN apt-get -qqy update && apt-get -qqy install cron curl supervisor
 
