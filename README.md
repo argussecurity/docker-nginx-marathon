@@ -21,7 +21,7 @@ where <apps_regex> is a regular expression to filter Marathon's tasks on (use ""
 Will do the following:
 
 1. Create a cron job to run 'nginx-marathon-bridge' script every 1 minute.
-    The script generates a file named 'sites.conf' in /usr/local/openresty/nginx/conf/conf.d/
+    The script generates a file named 'sites.conf' in /usr/local/openresty/nginx/conf/conf.d/sites/
     The file will contain all tasks queried from Marathon that match the given regex ("^(play-server|node-server)$")
     as upstreams, for example:
     ```
