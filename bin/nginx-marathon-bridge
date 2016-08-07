@@ -26,6 +26,7 @@ cronjob_conf_file=/etc/"$name"/marathons
 cronjob=/etc/cron.d/"$name"
 script_path=/usr/local/bin/"$name"
 conf_file=sites.conf
+nginx_root=/usr/local/openresty/nginx  # /usr/local/openresty/nginx/sbin/nginx -s reload
 
 function main {
   config "$@"
@@ -33,17 +34,17 @@ function main {
 
 function refresh_system_nginx {
   config "$@" > /tmp/"$conf_file"
-  if ! diff -q /tmp/"$conf_file" /usr/local/openresty/nginx/conf/conf.d/sites/"$conf_file" >&2
+  if ! diff -q /tmp/"$conf_file" ${nginx_root}/conf/conf.d/sites/"$conf_file" >&2
   then
     msg "Found changes. Sending reload request to nginx..."
-    cat /tmp/"$conf_file" > /usr/local/openresty/nginx/conf/conf.d/sites/"$conf_file"
-    /etc/init.d/nginx reload
+    cat /tmp/"$conf_file" > ${nginx_root}/conf/conf.d/sites/"$conf_file"
+    ${nginx_root}/sbin/nginx -s reload
   fi
 }
 
 function install_cronjob {
   mkdir -p "$(dirname "$cronjob_conf_file")"
-  mkdir -p /usr/local/openresty/nginx/conf/conf.d/sites
+  mkdir -p ${nginx_root}/conf/conf.d/sites
   [[ -f $cronjob_conf_file ]] || touch "$cronjob_conf_file"
   if [[ $# -gt 0 ]]
   then printf '%s\n' "$@" | dd of="$cronjob_conf_file"
@@ -51,7 +52,7 @@ function install_cronjob {
   cat "$0" | dd of="$script_path"
   chmod ug+rx "$script_path"
   cronjob     | dd of="$cronjob"
-  config "$@" | dd of=/usr/local/openresty/nginx/conf/conf.d/sites/"$conf_file"
+  config "$@" | dd of=${nginx_root}/conf/conf.d/sites/"$conf_file"
 }
 
 function cronjob {
