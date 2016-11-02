@@ -76,7 +76,7 @@ function apps {
   apps_regex=${1%}
   shift # all except first argument
   matched_apps=$(curl ${CURL_CMD_OPTS} -sSfLk -m 10 -H 'Accept: text/plain' "${1%/}"/v2/tasks | awk -v x=$apps_regex '{if (match($1, x)) print $0}')
-  (until curl -sSfLk -m 10 -H 'Accept: text/plain' "${1%/}"/v2/tasks | awk -v r=$apps_regex '{if (match($1, r)) print $0}'; do [ $# -lt 2 ] && return 1 || shift; done) | while read -r txt
+  (until         curl ${CURL_CMD_OPTS} -sSfLk -m 10 -H 'Accept: text/plain' "${1%/}"/v2/tasks | awk -v r=$apps_regex '{if (match($1, r)) print $0}'; do [ $# -lt 2 ] && return 1 || shift; done) | while read -r txt
   do
     set -- $txt
     if [ $# -lt 2 ]; then
