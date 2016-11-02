@@ -21,6 +21,8 @@ cat <<USAGE
 USAGE
 }; function --help { -h ;}
 
+CURL_CMD_OPTS=${CURL_CMD_OPTS:- }
+
 name=nginx-marathon-bridge
 cronjob_conf_file=/etc/"$name"/marathons
 cronjob=/etc/cron.d/"$name"
