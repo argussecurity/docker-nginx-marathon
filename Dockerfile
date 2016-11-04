@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:1.9.15
 
 RUN apt-get -qqy update && apt-get -qqy install cron curl supervisor
 
